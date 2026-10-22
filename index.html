@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="tl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Para sayo, Rosasko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Great+Vibes&family=Jost:wght@400;500;600&display=swap">
+<style>
+/* Layout: one centered "gift card" stage, scenes revealed one by one like opening a letter. Single dark night-wine look by choice. */
+:root{
+  --night:#1c0f1a; --wine:#3a1630; --rose:#e9a3b4; --blush:#f6d9de;
+  --gold:#d9b46a; --gold-hi:#f3dca2; --ink:#fbf2ee; --muted:#c8aab6;
+  --display:"Cormorant Garamond", "Garamond", Georgia, serif;
+  --script:"Great Vibes", "Snell Roundhand", cursive;
+  --body:"Jost", system-ui, -apple-system, sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0}
+img{max-width:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{
+  background:radial-gradient(120% 80% at 50% 0%, var(--wine) 0%, var(--night) 62%) fixed, var(--night);
+  color:var(--ink); font-family:var(--body); font-size:16px; line-height:1.6;
+  overflow-x:hidden;
+}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.stage{
+  position:relative;z-index:1;min-height:100%;display:grid;place-items:center;
+  padding-block:24px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+.scene{width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.eyebrow{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+.script{font-family:var(--script);font-weight:400;color:var(--gold-hi);line-height:1.05}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;line-height:1.1}
+h1{font-size:clamp(2.4rem,11vw,3.4rem)}
+h2{font-size:clamp(1.8rem,8vw,2.4rem)}
+h1 em,h2 em{font-style:italic;color:var(--rose)}
+p{margin:0}
+.muted{color:var(--muted)}
+.rule{width:64px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+
+/* --- Lock --- */
+.seal{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 35% 30%, #c4475f, #7c1d33 70%);
+  box-shadow:0 0 0 6px rgba(217,180,106,.18), 0 10px 30px rgba(0,0,0,.5), inset 0 -6px 12px rgba(0,0,0,.35);
+  font-family:var(--script);font-size:2.6rem;color:var(--gold-hi)}
+.dots{display:flex;gap:14px;margin-top:4px}
+.dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--gold);transition:background .2s, transform .2s}
+.dot.on{background:var(--gold);transform:scale(1.1)}
+.dots.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+.pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px;justify-content:center}
+.key{width:72px;height:72px;border-radius:50%;border:1px solid rgba(217,180,106,.35);
+  background:rgba(255,255,255,.03);color:var(--ink);font-family:var(--display);font-size:1.6rem;cursor:pointer;
+  transition:background .15s, transform .1s}
+.key:active{transform:scale(.94);background:rgba(217,180,106,.18)}
+.key.ghost{border-color:transparent;font-family:var(--body);font-size:.9rem;color:var(--muted)}
+.key:focus-visible,.btn:focus-visible,.link:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px}
+.msg{min-height:1.5em;font-size:.92rem;color:var(--rose)}
+.link{background:none;border:0;color:var(--muted);font:inherit;font-size:.85rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+/* --- Buttons --- */
+.btn{appearance:none;border:1px solid var(--gold);background:linear-gradient(180deg,rgba(243,220,162,.16),rgba(217,180,106,.06));
+  color:var(--gold-hi);font-family:var(--body);font-weight:600;font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:14px 28px;border-radius:999px;cursor:pointer;transition:background .2s, transform .15s}
+.btn:hover{background:rgba(217,180,106,.22)}
+.btn:active{transform:scale(.97)}
+
+/* --- Greeting --- */
+.letter{font-family:var(--display);font-size:1.22rem;font-weight:500;line-height:1.75;color:var(--blush);max-width:34ch;min-height:12em;text-align:left;white-space:pre-line}
+.letter .cursor{display:inline-block;width:1px;height:1.1em;background:var(--gold);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.sign{font-family:var(--script);font-size:2rem;color:var(--gold-hi);align-self:flex-end;margin-right:8%;opacity:0;transition:opacity 1s}
+.sign.show{opacity:1}
+
+/* --- Photos --- */
+.deck{position:relative;width:min(78vw,320px);aspect-ratio:3/4.6;max-width:100%}
+.polaroid{position:absolute;inset:0;background:#fffaf4;padding:10px 10px 56px;border-radius:3px;
+  box-shadow:0 18px 40px rgba(0,0,0,.55);transition:transform .7s cubic-bezier(.2,.7,.2,1), opacity .6s;cursor:pointer}
+.polaroid img{width:100%;height:100%;object-fit:cover;display:block;border-radius:1px}
+.polaroid figcaption{position:absolute;left:12px;right:12px;bottom:10px;font-family:var(--script);font-size:1.35rem;color:#5a2440;line-height:1.1}
+.polaroid.gone{transform:translateX(130%) rotate(18deg)!important;opacity:0;pointer-events:none}
+.counter{font-size:.78rem;letter-spacing:.24em;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* --- Video --- */
+.frame{width:min(80vw,340px);max-width:100%;padding:8px;border-radius:22px;
+  background:linear-gradient(145deg,var(--gold-hi),var(--gold) 40%,#8a6a2e);box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.frame video{display:block;width:100%;aspect-ratio:9/16;border-radius:15px;background:#000;object-fit:cover}
+
+/* --- Finale --- */
+.big-script{font-size:clamp(3.4rem,17vw,4.8rem)}
+.date{font-family:var(--display);font-style:italic;color:var(--gold);letter-spacing:.08em}
+
+@media (prefers-reduced-motion: reduce){
+  .scene{animation:none}
+  .polaroid{transition:opacity .3s}
+}
+</style>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<main class="stage">
+
+  <!-- Scene 1: lock -->
+  <section class="scene" id="s-lock" aria-label="Password">
+    <div class="seal" aria-hidden="true">&#9829;</div>
+    <span class="eyebrow">May sulat para sa'yo</span>
+    <h2>Para sayo, <em>Rosasko</em></h2>
+    <p class="muted">Ilagay ang ating espesyal na petsa para mabuksan.</p>
+    <div class="dots" id="dots" aria-live="polite">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+    <div class="pad" id="pad">
+      <button class="key" id="k1">1</button><button class="key" id="k2">2</button><button class="key" id="k3">3</button>
+      <button class="key" id="k4">4</button><button class="key" id="k5">5</button><button class="key" id="k6">6</button>
+      <button class="key" id="k7">7</button><button class="key" id="k8">8</button><button class="key" id="k9">9</button>
+      <button class="key ghost" id="kHint" data-act="hint">Clue</button>
+      <button class="key" id="k0">0</button>
+      <button class="key ghost" id="kDel" data-act="del" aria-label="Burahin">⌫</button>
+    </div>
+    <p class="msg" id="msg"></p>
+  </section>
+
+  <!-- Scene 2: greeting -->
+  <section class="scene" id="s-greet" hidden>
+    <span class="eyebrow">Ngayong araw</span>
+    <h1>Happy <em>Birthday</em></h1>
+    <span class="script" style="font-size:2.8rem">Mommy</span>
+    <div class="rule"></div>
+    <p class="letter" id="letter" aria-live="polite"></p>
+    <button class="btn" id="toPhotos" hidden>Tingnan ang ating mga alaala</button>
+  </section>
+
+  <!-- Scene 3: photos -->
+  <section class="scene" id="s-photos" hidden>
+    <span class="eyebrow">Ilan sa mga paborito ko</span>
+    <h2>Tayong <em>dalawa</em></h2>
+    <div class="deck" id="deck">
+      <figure class="polaroid" style="transform:rotate(-3deg)"><img src="photo4.jpg" alt="Tayong dalawa sa loob ng hexagon mirror room"><figcaption>Sa bawat anggulo, ikaw pa rin.</figcaption></figure>
+      <figure class="polaroid" style="transform:rotate(4deg)"><img src="photo3.jpg" alt="Ikaw sa gitna ng mga planeta"><figcaption>Pinakamaliwanag sa buong kalawakan.</figcaption></figure>
+      <figure class="polaroid" style="transform:rotate(-5deg)"><img src="photo2.jpg" alt="Tayo sa makulay na hagdan"><figcaption>Kahit saan, hahabulin kita.</figcaption></figure>
+      <figure class="polaroid" style="transform:rotate(2deg)"><img src="photo1.jpg" alt="Tayo sa booth na parang tren"><figcaption>Sa bawat biyahe, ikaw ang katabi ko.</figcaption></figure>
+    </div>
+    <p class="counter" id="counter">1 / 4 · TAP PARA SA SUSUNOD</p>
+    <button class="btn" id="toVideo" hidden>May isa pa akong regalo</button>
+  </section>
+
+  <!-- Scene 4: video -->
+  <section class="scene" id="s-video" hidden>
+    <span class="eyebrow">Sa ulan</span>
+    <h2>Ang ating <em>video</em></h2>
+    <div class="frame">
+      <video id="vid" src="video.mp4" poster="poster.jpg" playsinline controls preload="metadata"></video>
+    </div>
+    <p class="muted" style="font-size:.9rem">I-tap ang play. Lakasan mo ang volume.</p>
+    <button class="btn" id="toEnd" hidden>Isang huling mensahe</button>
+  </section>
+
+  <!-- Scene 5: finale -->
+  <section class="scene" id="s-end" hidden>
+    <span class="eyebrow">At palagi</span>
+    <span class="script big-script">I love you</span>
+    <div class="rule"></div>
+    <p style="font-family:var(--display);font-size:1.15rem;color:var(--blush);max-width:30ch">Salamat sa pagpili sa akin araw-araw. Maligayang kaarawan, Mommy.</p>
+    <p class="date">03 · 27 · 21 → habambuhay</p>
+    <button class="btn" id="replay">Ulitin mula sa simula</button>
+  </section>
+
+</main>
+
+<script>
+(() => {
+  const PASS = "032721";
+  const LETTER =
+`Happy birthday, Mommy!
+
+Nagpapasalamat ako sa Panginoon at ako pa rin ang kasama mo, Mommy, sa ating pagtanda. Sana ay patuloy tayong maging matatag habang inaabot pa natin ang mga pangarap natin. Alam kong hindi Niya tayo pinababayaan.
+
+Mommy, alam ko ang pagsisikap mo, ang paghihirap at patuloy na paglaban mo para sa buhay at lalo na para sa pamilya mo. Nakikita ko 'yon lahat at sobrang humahanga ako sa iyo! Nandito lamang ako palagi. Ikaw ang paborito kong tao, ngayon at habambuhay.`;
+
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const show = id => {
+    document.querySelectorAll(".scene").forEach(s => s.hidden = s.id !== id);
+    window.scrollTo({top:0, behavior: reduce ? "auto" : "smooth"});
+  };
+
+  /* ---------- Music box (Happy Birthday, public-domain melody) via Web Audio ---------- */
+  const Music = (() => {
+    let ctx, master, timer, nextTime = 0, step = 0, playing = false;
+    const N = {F3:174.61,G3:196,A3:220,Bb3:233.08,C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,Bb4:466.16,C5:523.25,D5:587.33,E5:659.25,F5:698.46};
+    const beat = 0.62;
+    // [melody note, beats, bass note or null]
+    const song = [
+      ["C5",.75,"F3"],["C5",.25,null],["D5",1,null],["C5",1,"C4"],["F5",1,null],["E5",2,"C4"],
+      ["C5",.75,"C4"],["C5",.25,null],["D5",1,null],["C5",1,"C4"],["G5x",1,null],["F5",2,"F3"],
+      ["C5",.75,"F3"],["C5",.25,null],["C6x",1,null],["A5x",1,"F3"],["F5",1,null],["E5",1,"Bb3"],["D5",2,null],
+      ["Bb5x",.75,"Bb3"],["Bb5x",.25,null],["A5x",1,null],["F5",1,"C4"],["G5x",1,null],["F5",2,"F3"],
+      [null,1,null]
+    ];
+    const freq = n => n ? ({G5x:783.99,C6x:1046.5,A5x:880,Bb5x:932.33})[n] || N[n] : null;
+    function tone(f, t, dur, vol){
+      const o = ctx.createOscillator(), o2 = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "sine"; o.frequency.value = f;
+      o2.type = "triangle"; o2.frequency.value = f*2;
+      const g2 = ctx.createGain(); g2.gain.value = .18;
+      o.connect(g); o2.connect(g2).connect(g); g.connect(master);
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(vol, t+.008);
+      g.gain.exponentialRampToValueAtTime(.0008, t+dur);
+      o.start(t); o2.start(t); o.stop(t+dur+.05); o2.stop(t+dur+.05);
+    }
+    function schedule(){
+      while (nextTime < ctx.currentTime + 0.4){
+        const [m, b, bass] = song[step];
+        if (m) tone(freq(m), nextTime, 2.2, .22);
+        if (bass){ tone(N[bass], nextTime, 2.8, .12); tone(N[bass]*1.5, nextTime+beat, 1.6, .06); }
+        nextTime += b*beat;
+        step = (step+1) % song.length;
+      }
+    }
+    function init(){
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = ctx.createGain(); master.gain.value = 0;
+      const dl = ctx.createDelay(); dl.delayTime.value = .28;
+      const fb = ctx.createGain(); fb.gain.value = .32;
+      const wet = ctx.createGain(); wet.gain.value = .35;
+      master.connect(ctx.destination);
+      master.connect(dl); dl.connect(fb).connect(dl); dl.connect(wet).connect(ctx.destination);
+    }
+    return {
+      start(){
+        try{
+          if (!ctx) init();
+          ctx.resume();
+          if (!playing){ nextTime = ctx.currentTime + .1; timer = setInterval(schedule, 100); playing = true; }
+          master.gain.cancelScheduledValues(ctx.currentTime);
+          master.gain.linearRampToValueAtTime(.9, ctx.currentTime + 1.5);
+        }catch(e){}
+      },
+      fadeOut(){
+        if (!ctx) return;
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+        master.gain.linearRampToValueAtTime(0, ctx.currentTime + .8);
+      },
+      fadeIn(){ if (ctx) this.start(); }
+    };
+  })();
+
+  /* ---------- Petals + sparkles ---------- */
+  const cv = $("fx"), cx = cv.getContext("2d");
+  let W, H, parts = [];
+  const fit = () => { const d = devicePixelRatio || 1; W = innerWidth; H = innerHeight; cv.width = W*d; cv.height = H*d; cx.setTransform(d,0,0,d,0,0); };
+  fit(); addEventListener("resize", fit);
+  const COLORS = ["#e9a3b4","#f6d9de","#d9b46a","#f3dca2","#c4475f"];
+  function spawn(burst){
+    const p = {
+      x: burst ? W/2 + (Math.random()-.5)*60 : Math.random()*W,
+      y: burst ? H*.45 : -20,
+      vx: burst ? (Math.random()-.5)*9 : (Math.random()-.5)*.5,
+      vy: burst ? -Math.random()*9-3 : Math.random()*.7+.4,
+      r: Math.random()*5+3, rot: Math.random()*6.28, vr:(Math.random()-.5)*.06,
+      burst, c: COLORS[Math.random()*COLORS.length|0], petal: Math.random()<.6, life: 1
+    };
+    parts.push(p);
+  }
+  let ambient = 0;
+  function loop(){
+    cx.clearRect(0,0,W,H);
+    if (ambient && parts.length < ambient && Math.random()<.25) spawn(false);
+    parts.forEach(p => {
+      p.vy = Math.min(p.vy + (p.burst ? .16 : 0), 2.4);
+      p.vx *= .99; p.x += p.vx + Math.sin(p.y/40)*.3; p.y += p.vy; p.rot += p.vr;
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.rot); cx.fillStyle = p.c; cx.globalAlpha = .85;
+      if (p.petal){ cx.beginPath(); cx.ellipse(0,0,p.r,p.r*.55,0,0,6.28); cx.fill(); }
+      else { cx.fillRect(-p.r/2,-p.r/2,p.r*.7,p.r*.7); }
+      cx.restore();
+    });
+    parts = parts.filter(p => p.y < H+30);
+    requestAnimationFrame(loop);
+  }
+  if (!reduce){ ambient = 14; loop(); }
+  const burst = () => { if (!reduce) for (let i=0;i<110;i++) spawn(true); };
+
+  /* ---------- Lock ---------- */
+  let code = "";
+  const dots = [...$("dots").children];
+  const paint = () => dots.forEach((d,i)=>d.classList.toggle("on", i < code.length));
+  function press(v){
+    if (v === "del"){ code = code.slice(0,-1); paint(); return; }
+    if (v === "hint"){ $("msg").textContent = "Clue: ang petsa natin, buwan-araw-taon (MMDDYY)."; return; }
+    if (code.length >= 6) return;
+    code += v; paint();
+    if (code.length === 6) setTimeout(check, 220);
+  }
+  function check(){
+    if (code === PASS){
+      $("msg").textContent = "";
+      Music.start(); burst(); ambient = reduce ? 0 : 26;
+      setTimeout(() => { show("s-greet"); typeLetter(); }, 500);
+    } else {
+      $("dots").classList.remove("shake"); void $("dots").offsetWidth; $("dots").classList.add("shake");
+      $("msg").textContent = "Hindi 'yan, Mahal. Subukan ulit.";
+      code = ""; setTimeout(paint, 300);
+    }
+  }
+  $("pad").addEventListener("click", e => {
+    const k = e.target.closest(".key"); if (!k) return;
+    press(k.dataset.act || k.textContent.trim());
+  });
+  addEventListener("keydown", e => {
+    if ($("s-lock").hidden) return;
+    if (/^\d$/.test(e.key)) press(e.key);
+    else if (e.key === "Backspace") press("del");
+  });
+
+  /* ---------- Letter ---------- */
+  function typeLetter(){
+    const el = $("letter"); el.textContent = "";
+    if (reduce){ el.textContent = LETTER; done(); return; }
+    let i = 0; const cur = document.createElement("span"); cur.className = "cursor";
+    const txt = document.createTextNode(""); el.append(txt, cur);
+    (function tick(){
+      txt.data = LETTER.slice(0, ++i);
+      if (i < LETTER.length) setTimeout(tick, LETTER[i-1] === "\n" ? 260 : 34);
+      else { cur.remove(); done(); }
+    })();
+    function done(){ $("toPhotos").hidden = false; }
+  }
+
+  /* ---------- Photos ---------- */
+  const cards = [...document.querySelectorAll(".polaroid")].reverse(); // top card first
+  let idx = 0;
+  function nextPhoto(){
+    if (idx >= cards.length) return;
+    if (idx === cards.length - 1){ $("counter").textContent = "4 / 4"; $("toVideo").hidden = false; idx++; return; }
+    cards[idx].classList.add("gone"); idx++;
+    $("counter").textContent = `${idx+1} / ${cards.length}` + (idx === cards.length-1 ? "" : " · TAP PARA SA SUSUNOD");
+    if (idx === cards.length - 1) $("toVideo").hidden = false;
+  }
+  $("deck").addEventListener("click", nextPhoto);
+
+  /* ---------- Video ---------- */
+  const vid = $("vid");
+  vid.addEventListener("play", () => Music.fadeOut());
+  vid.addEventListener("pause", () => { if (!vid.ended) Music.fadeIn(); });
+  vid.addEventListener("ended", () => { Music.fadeIn(); burst(); $("toEnd").hidden = false; });
+
+  /* ---------- Navigation ---------- */
+  $("toPhotos").onclick = () => show("s-photos");
+  $("toVideo").onclick = () => { show("s-video"); setTimeout(()=>{ $("toEnd").hidden = false; }, 45000); };
+  $("toEnd").onclick = () => { vid.pause(); show("s-end"); burst(); };
+  $("replay").onclick = () => {
+    cards.forEach(c => c.classList.remove("gone")); idx = 0;
+    $("counter").textContent = "1 / 4 · TAP PARA SA SUSUNOD"; $("toVideo").hidden = true; $("toEnd").hidden = true;
+    vid.currentTime = 0; $("toPhotos").hidden = true;
+    show("s-greet"); typeLetter(); burst();
+  };
+})();
+</script>
+
+</body>
+</html>
